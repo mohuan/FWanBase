@@ -1,14 +1,41 @@
 import 'package:redux/redux.dart';
-import 'package:wanbase/common/local/LocalStorage.dart';
+import 'package:wanbase/common/local/local_storage.dart';
 import 'package:wanbase/common/config/Config.dart';
 import 'dart:convert';
 import 'package:wanbase/common/model/User.dart';
 import 'package:wanbase/common/dao/dao_result.dart';
 import 'package:wanbase/common/redux/user_redux.dart';
+import 'package:wanbase/common/net/api.dart';
+import 'package:wanbase/common/net/address.dart';
+import 'package:dio/dio.dart';
 
 class UserDao {
   static login(userName,password,store) async {
+    httpManager.clearAuthorization();
 
+    Map requestParams = {
+      "user": "18622929665",
+      "password": "670b14728ad9902aecba32e22fa4f6bd",
+    };
+
+    Map<String, String> header = {
+      "Content-Type":HttpManager.CONTENT_TYPE_JSON,
+      "sid":"11111111111"
+    };
+
+    var res = await httpManager.netFetch(Address.getAuth(), json.encode(requestParams), header, new Options(method: "post"));
+    var resultData = null;
+    if (res != null && res.result) {
+      //await LocalStorage.save(Config.PW_KEY, password);
+      //var resultData = await getUserInfo(null);
+      if (Config.DEBUG) {
+        print("user result " + resultData.result.toString());
+        print(resultData.data);
+        print(res.data.toString());
+      }
+      store.dispatch(new UpdateUserAction(resultData.data));
+    }
+    return new DataResult(resultData, res.result);
   }
 
 
