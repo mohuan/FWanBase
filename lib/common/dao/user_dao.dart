@@ -7,6 +7,9 @@ import 'package:wanbase/common/dao/dao_result.dart';
 import 'package:wanbase/common/redux/user_redux.dart';
 
 class UserDao {
+  static login(userName,password,store) async {
+
+  }
 
 
   ///初始化用户信息

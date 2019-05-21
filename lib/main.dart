@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
-import 'package:redux/redux.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:wanbase/common/redux/base_state.dart';
+import 'package:redux/redux.dart';
 import 'package:wanbase/common/model/User.dart';
-import 'package:wanbase/page/welcome.dart';
+import 'package:wanbase/common/redux/base_state.dart';
 import 'package:wanbase/page/login.dart';
+import 'package:wanbase/page/welcome.dart';
 
 void main(){
   runZoned(() {
@@ -37,6 +38,7 @@ class FlutterReduxApp extends StatelessWidget{
     return new StoreProvider(
         store: store,
         child: new StoreBuilder<BaseState>(builder: (context,store) {
+
           return new MaterialApp(
             routes: {
               WelcomePage.sName:(context){

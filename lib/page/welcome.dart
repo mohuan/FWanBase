@@ -6,6 +6,7 @@ import 'package:wanbase/common/redux/base_state.dart';
 import 'package:wanbase/common/style/BaseColors.dart';
 import 'package:wanbase/common/utils/common_utils.dart';
 import 'package:wanbase/common/utils/navigator_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WelcomePage extends StatefulWidget{
 
@@ -48,10 +49,11 @@ class _WelcomePageState extends State<WelcomePage>{
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
     return StoreBuilder<BaseState>(
       builder: (context,store){
         return new Container(
-          color: Color(BaseColors.white),
+          color: Color(BaseColors.White),
           child: new Image(
             image: new AssetImage("images/welcome.png"),
             fit: BoxFit.cover,
