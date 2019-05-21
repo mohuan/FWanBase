@@ -1,55 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:wanbase/page/login.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+import 'package:wanbase/common/dao/user_dao.dart';
+import 'package:wanbase/common/redux/base_state.dart';
+import 'package:wanbase/common/style/BaseColors.dart';
+import 'package:wanbase/common/utils/common_utils.dart';
+import 'package:wanbase/common/utils/navigator_utils.dart';
 
-class WelcomePage extends StatelessWidget{
+class WelcomePage extends StatefulWidget{
+
+  static final String sName = "/";
+
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
+
+
+}
+
+class _WelcomePageState extends State<WelcomePage>{
+
+  bool hadInit = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if(hadInit){
+      return;
+    }
+    hadInit = true;
+
+    ///防止多次进入
+    Store<BaseState> store = StoreProvider.of(context);
+    CommonUtils.initStatusBarHeight(context);
+    new Future.delayed(const Duration(seconds: 2,milliseconds: 2000),(){
+      UserDao.initUserInfo(store).then((res) {
+        if(res !=null && res.result){
+          NavigatorUtils.goHome(context);
+        }else{
+          NavigatorUtils.goLogin(context);
+        }
+        return true;
+      });
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
-      return MaterialApp(
-          title: '玩',
-          theme: ThemeData(
-            primaryColor: Color(0xFF5699E7)
+    return StoreBuilder<BaseState>(
+      builder: (context,store){
+        return new Container(
+          color: Color(BaseColors.white),
+          child: new Image(
+            image: new AssetImage("images/welcome.png"),
+            fit: BoxFit.cover,
           ),
-          home: WelcomePageHome(),
-          routes: <String,WidgetBuilder>{
-            '/LoginPage': (BuildContext context) => new LoginPanel()
-          },
-      );
-  }
-}
-
-class WelcomePageHome extends StatefulWidget{
-
-  @override
-  State createState() => WelcomePageHomeState();
-}
-
-class WelcomePageHomeState extends State<WelcomePageHome>{
-
-  @override
-  void initState() {
-    super.initState();
-    _countDown();
-  }
-
-  // 倒计时跳转
-  _countDown(){
-    var _duration = new Duration(seconds: 3);
-    new Future.delayed(_duration,_goPage);
-  }
-
-  //跳转到登录页面
-  _goPage(){
-    Navigator.of(context).pushReplacementNamed("/LoginPage");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Image(
-        image: AssetImage("images/welcome.png"),
-        fit: BoxFit.cover
-      )
+        );
+      },
     );
   }
 }
+

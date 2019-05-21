@@ -23,8 +23,21 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  # 全局store
+  flutter_redux: ^0.5.3
+  # json反序列化
+  json_annotation: ^2.0.0
+  # rx
+  rxdart: ^0.21.0
+  # 存储
+  shared_preferences: ^0.5.1+1
+  # status bar
+  flutter_statusbar: ^0.0.1
 
 dev_dependencies:
+  # json 反序列用
+  build_runner: ^1.2.8
+  json_serializable: ^2.0.0
   flutter_test:
     sdk: flutter
 
