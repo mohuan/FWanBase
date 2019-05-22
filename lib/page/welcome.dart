@@ -3,7 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:wanbase/common/dao/user_dao.dart';
 import 'package:wanbase/common/redux/base_state.dart';
-import 'package:wanbase/common/style/BaseColors.dart';
+import 'package:wanbase/common/style/base_style.dart';
 import 'package:wanbase/common/utils/common_utils.dart';
 import 'package:wanbase/common/utils/navigator_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

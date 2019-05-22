@@ -3,11 +3,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wanbase/common/dao/user_dao.dart';
 import 'package:wanbase/common/redux/base_state.dart';
-import 'package:wanbase/common/style/BaseColors.dart';
+import 'package:wanbase/common/style/base_style.dart';
 import 'package:wanbase/common/utils/common_utils.dart';
 import 'package:wanbase/common/utils/navigator_utils.dart';
 import 'package:wanbase/widget/base_flex_button.dart';
 import 'package:wanbase/widget/base_input_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 ///登录页面
 class LoginPage extends StatefulWidget{
@@ -106,12 +107,12 @@ class _LoginPageState extends State<LoginPage>{
                           NavigatorUtils.goHome(context);
                           return true;
                         });
+                      }else{
+                        Fluttertoast.showToast(msg: res.data);
                       }
                     });
                   },
                 ),
-
-
               ],
             ),
           ),

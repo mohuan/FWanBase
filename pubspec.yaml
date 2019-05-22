@@ -45,6 +45,10 @@ dependencies:
   connectivity: ^0.4.2
   # 获取设备信息
   device_info: ^0.4.0+1
+  #提示
+  fluttertoast: ^3.0.1
+  # android
+  android_intent: ^0.3.0
 
 dev_dependencies:
   # json 反序列用

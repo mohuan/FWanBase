@@ -8,6 +8,7 @@ import 'package:wanbase/common/model/User.dart';
 import 'package:wanbase/common/redux/base_state.dart';
 import 'package:wanbase/page/login.dart';
 import 'package:wanbase/page/welcome.dart';
+import 'package:wanbase/page/home_page.dart';
 
 void main(){
   runZoned(() {
@@ -46,6 +47,9 @@ class FlutterReduxApp extends StatelessWidget{
               },
               LoginPage.sName:(context){
                 return new LoginPage();
+              },
+              HomePage.sName:(content){
+                return new HomePage();
               }
             },
           );

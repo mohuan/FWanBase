@@ -21,3 +21,9 @@ class BaseConstant{
     decoration: TextDecoration.none
   );
 }
+
+class BaseICons {
+  static const IconData MAIN_DT = const IconData(0xe684);
+  static const IconData MAIN_QS = const IconData(0xe818);
+  static const IconData MAIN_MY = const IconData(0xe6d0);
+}
