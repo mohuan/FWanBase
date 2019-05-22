@@ -14,20 +14,18 @@ class UserDao {
     httpManager.clearAuthorization();
 
     Map requestParams = {
-      "user": "18622929661",
-      "password": "670b14728ad9902aecba32e22fa4f6bd",
+      "user": userName,
+      "password": password,
     };
 
-    Map<String, String> header = {
-      "Content-Type":HttpManager.CONTENT_TYPE_JSON,
-      "sid":"11111111111"
-    };
-
-    var res = await httpManager.netFetch(Address.getAuth(), json.encode(requestParams), header, new Options(method: "post"));
-    var resultData = null;
+    var res = await httpManager.netFetch(Address.getAuth(), json.encode(requestParams), null, new Options(method: "post"));
+    var resultData;
     if (res != null && res.result) {
       //await LocalStorage.save(Config.PW_KEY, password);
       var resultData = User.fromJson(res.data);
+      //保存用户信息
+      await LocalStorage.save(Config.USER_INFO, json.encode(resultData.toJson()));
+      await LocalStorage.save(Config.TICKET_KEY, (resultData as User).ticket);
       if (Config.DEBUG) {
 //        print("user result " + resultData.result.toString());
 //        print(resultData.data);
@@ -44,13 +42,13 @@ class UserDao {
 
   ///初始化用户信息
   static initUserInfo(Store store) async {
-     var token = await LocalStorage.get(Config.TOKEN_KEY);
+     var ticket = await LocalStorage.get(Config.TICKET_KEY);
      var res = await getUserInfoLocal();
-     if(res != null && res.result && token != null){
+     if(res != null && res.result && ticket != null){
        store.dispatch(UpdateUserAction(res.data));
      }
 
-     return new DataResult(res.data, (res.result && (token != null)));
+     return new DataResult(res.data, (res.result && (ticket != null)));
   }
 
   //

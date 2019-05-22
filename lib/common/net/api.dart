@@ -101,7 +101,7 @@ class HttpManager {
 
   ///获取授权token
   getAuthorization() async {
-    return _tokenInterceptors.getAuthorization();
+    return _tokenInterceptors.getAuthorizationTicket();
   }
 }
 

@@ -1,22 +1,28 @@
 import 'package:dio/dio.dart';
 import 'package:wanbase/common/config/config.dart';
 import 'package:wanbase/common/local/local_storage.dart';
+import 'package:wanbase/common/net/api.dart';
+import 'package:wanbase/common/utils/common_utils.dart';
 
 ///Token拦截器
 class TokenInterceptors extends InterceptorsWrapper {
 
-  String _token;
+  String _ticket;
 
   @override
   onRequest(RequestOptions options) async {
     //授权码
-    if (_token == null) {
-      var authorizationCode = await getAuthorization();
-      if (authorizationCode != null) {
-        _token = authorizationCode;
+    if (_ticket == null) {
+      var _ticketCode = await getAuthorizationTicket();
+      if (_ticketCode != null) {
+        _ticket = _ticketCode;
+
+        options.headers["ticket"] = _ticket;
       }
     }
-    options.headers["Authorization"] = _token;
+
+    options.headers["Content-Type"] = HttpManager.CONTENT_TYPE_JSON;
+    options.headers["sid"] = CommonUtils.getUuid();
     return options;
   }
 
@@ -24,11 +30,11 @@ class TokenInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response) async{
     try {
-      var responseJson = response.data;
-      if (response.statusCode == 201 && responseJson["token"] != null) {
-        _token = 'token ' + responseJson["token"];
-        await LocalStorage.save(Config.TOKEN_KEY, _token);
-      }
+//      var responseJson = response.data;
+//      if (response.statusCode == 201 && responseJson["token"] != null) {
+//        _token = 'token ' + responseJson["token"];
+//        await LocalStorage.save(Config.TOKEN_KEY, _token);
+//      }
     } catch (e) {
       print(e);
     }
@@ -37,24 +43,25 @@ class TokenInterceptors extends InterceptorsWrapper {
 
   ///清除授权
   clearAuthorization() {
-    this._token = null;
-    LocalStorage.remove(Config.TOKEN_KEY);
+    this._ticket = null;
+    LocalStorage.remove(Config.TICKET_KEY);
   }
 
-  ///获取授权token
-  getAuthorization() async {
-    String token = await LocalStorage.get(Config.TOKEN_KEY);
-    if (token == null) {
-      String basic = await LocalStorage.get(Config.TOKEN_KEY);  //  qwe USER_BASIC_CODE
+  ///获取授权ticket
+  getAuthorizationTicket() async {
+    String ticket = await LocalStorage.get(Config.TICKET_KEY);
+    if (ticket == null) {
+      String basic = await LocalStorage.get(Config.TICKET_KEY);  //  qwe USER_BASIC_CODE
       if (basic == null) {
         //提示输入账号密码
       } else {
         //通过 basic 去获取token，获取到设置，返回token
-        return "Basic $basic";
+//        return "Basic $basic";
+        return basic;
       }
     } else {
-      this._token = token;
-      return token;
+      this._ticket = ticket;
+      return ticket;
     }
   }
 }

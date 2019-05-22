@@ -43,6 +43,8 @@ dependencies:
   event_bus:  ^1.1.0
   #
   connectivity: ^0.4.2
+  # 获取设备信息
+  device_info: ^0.4.0+1
 
 dev_dependencies:
   # json 反序列用

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:wanbase/common/redux/base_state.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wanbase/common/style/BaseColors.dart';
-import 'package:wanbase/widget/base_input_widget.dart';
-import 'package:wanbase/widget/base_flex_button.dart';
-import 'package:wanbase/common/utils/common_utils.dart';
 import 'package:wanbase/common/dao/user_dao.dart';
+import 'package:wanbase/common/redux/base_state.dart';
+import 'package:wanbase/common/style/BaseColors.dart';
+import 'package:wanbase/common/utils/common_utils.dart';
 import 'package:wanbase/common/utils/navigator_utils.dart';
+import 'package:wanbase/widget/base_flex_button.dart';
+import 'package:wanbase/widget/base_input_widget.dart';
 
 ///登录页面
 class LoginPage extends StatefulWidget{
@@ -100,7 +99,7 @@ class _LoginPageState extends State<LoginPage>{
                     }
                     CommonUtils.showLoadingDialog(context);
 
-                    UserDao.login("", "", store).then((res) {
+                    UserDao.login(_userName, CommonUtils.generateMd5(_password), store).then((res) {
                       Navigator.pop(context);
                       if (res != null && res.result) {
                         new Future.delayed(const Duration(seconds: 1), () {
