@@ -14,7 +14,7 @@ class UserDao {
     httpManager.clearAuthorization();
 
     Map requestParams = {
-      "user": "18622929665",
+      "user": "18622929661",
       "password": "670b14728ad9902aecba32e22fa4f6bd",
     };
 
@@ -27,13 +27,16 @@ class UserDao {
     var resultData = null;
     if (res != null && res.result) {
       //await LocalStorage.save(Config.PW_KEY, password);
-      //var resultData = await getUserInfo(null);
+      var resultData = User.fromJson(res.data);
       if (Config.DEBUG) {
-        print("user result " + resultData.result.toString());
-        print(resultData.data);
+//        print("user result " + resultData.result.toString());
+//        print(resultData.data);
         print(res.data.toString());
       }
-      store.dispatch(new UpdateUserAction(resultData.data));
+      store.dispatch(new UpdateUserAction(resultData));
+    }else{
+      //错误
+      return new DataResult(res.data, res.result);
     }
     return new DataResult(resultData, res.result);
   }

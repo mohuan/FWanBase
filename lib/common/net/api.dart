@@ -10,6 +10,7 @@ import 'package:wanbase/common/net/interceptors/log_interceptor.dart';
 import 'package:wanbase/common/net/interceptors/response_interceptor.dart';
 import 'package:wanbase/common/net/interceptors/token_interceptor.dart';
 import 'package:wanbase/common/net/result_data.dart';
+import 'dart:convert';
 
 ///http请求
 class HttpManager {
@@ -53,6 +54,31 @@ class HttpManager {
     Response response;
     try {
       response = await _dio.request(url, data: params, options: option);
+
+
+      //add 判断返回
+      if(response.data is DioError){
+        var msg = "网络异常";
+
+        Response dioError;
+        if (response.data.response != null) {
+          dioError = response.data.response;
+          var list = (dioError.data as LinkedHashMap).entries.toList();
+//          (dioError.data as LinkedHashMap).entries.to
+          for (var value in list) {
+              if(value.key != null && value.key == "msg"){
+                msg = value.value;
+              }
+          }
+        } else {
+          dioError = new Response(statusCode: 666);
+        }
+
+        return new ResultData(Code.errorHandleFunction(dioError.statusCode, msg, noTip), false, dioError.statusCode);
+      }
+      //end
+
+      print(response);
     } on DioError catch (e) {
       Response errorResponse;
       if (e.response != null) {
